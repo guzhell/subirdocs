@@ -8,7 +8,7 @@ export const ZIP_ROOT = "MSTRPLN_Acta_Constitutiva";
 export const MEMBERS = [
   { id: "mario-ivan", name: "Mario Iván" },
   { id: "cuitlahuac", name: "Cuitláhuac" },
-  { id: "jonhatan", name: "Jonhatan" },
+  { id: "jonathan", name: "Jonathan" },
   { id: "adrian", name: "Adrián" },
   { id: "gustavo", name: "Gustavo" },
   { id: "cesar", name: "César" },
