@@ -35,6 +35,18 @@ async function route(request, env, url) {
   const { pathname } = url;
   const method = request.method;
 
+  // Diagnóstico público: solo dice si cada pieza existe, nunca su valor.
+  if (pathname === "/api/health") {
+    let r2 = false;
+    try { await env.DOCS.head("health-check"); r2 = true; } catch {}
+    return json({
+      PIN_GENERAL: !!env.PIN_GENERAL,
+      PIN_ADMIN: !!env.PIN_ADMIN,
+      SESSION_SECRET: !!env.SESSION_SECRET,
+      R2: r2,
+    });
+  }
+
   if (!env.PIN_GENERAL || !env.PIN_ADMIN || !env.SESSION_SECRET) {
     return json({ error: "El portal no está configurado: faltan los secrets PIN_GENERAL, PIN_ADMIN o SESSION_SECRET." }, 503);
   }
