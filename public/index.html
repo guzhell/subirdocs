@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>MSTRPLN · Acta constitutiva</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23000'/%3E%3Cpath d='M9 22V10l7 7 7-7v12' stroke='%23fff' stroke-width='2.5' fill='none'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- Pantalla de acceso -->
+  <main id="login" class="login" hidden>
+    <div class="login__box">
+      <div class="wordmark">MSTRPLN</div>
+      <h1 class="headline">
+        <span>Expediente del acta constitutiva.</span>
+        <span class="headline__muted">Sube tus documentos personales en un solo lugar.</span>
+      </h1>
+      <form id="login-form" class="pin-form" autocomplete="off">
+        <label class="label" for="pin">PIN de acceso</label>
+        <input id="pin" class="pin-input" type="password" inputmode="numeric" autocomplete="one-time-code" maxlength="12" required>
+        <button class="btn btn--primary btn--block" type="submit">Entrar →</button>
+        <p id="login-error" class="form-error" role="alert"></p>
+      </form>
+      <p class="caption">Portal privado del consejo de MSTRPLN. Los archivos no son públicos.</p>
+    </div>
+  </main>
+
+  <!-- Portal -->
+  <div id="app" hidden>
+    <header class="nav">
+      <div class="nav__in">
+        <div class="nav__brand">
+          <span class="wordmark">MSTRPLN</span>
+          <span class="label nav__tag">Consejo · Acta constitutiva</span>
+        </div>
+        <div class="nav__actions">
+          <span id="role-badge" class="label role-badge" hidden>Admin</span>
+          <button id="admin-btn" class="btn btn--ghost" type="button">Acceso admin</button>
+          <button id="logout-btn" class="btn btn--ghost" type="button">Salir</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="hero">
+        <h1 class="headline">
+          <span>Documentos para el acta.</span>
+          <span class="headline__muted">Elige tu nombre y sube cada archivo.</span>
+        </h1>
+        <p class="body-text">Acepta PDF, JPG, PNG, HEIC o WEBP de hasta <span id="max-mb">15</span> MB. Puedes tomar la foto directo desde el celular. Si te equivocas, reemplaza el archivo.</p>
+      </section>
+
+      <section class="stats" aria-label="Avance general">
+        <div class="stat stat--sky">
+          <div class="label">↑ Documentos recibidos</div>
+          <div class="stat__value"><span id="stat-docs">0</span><span class="stat__of">/<span id="stat-docs-total">0</span></span></div>
+          <div class="caption">Documentos obligatorios de todo el consejo</div>
+        </div>
+        <div class="stat stat--mint">
+          <div class="label">Socios completos</div>
+          <div class="stat__value"><span id="stat-members">0</span><span class="stat__of">/<span id="stat-members-total">0</span></span></div>
+          <div class="caption">Con todos sus documentos obligatorios</div>
+        </div>
+        <div class="stat stat--peach">
+          <div class="label">↓ Pendientes</div>
+          <div class="stat__value" id="stat-pending">0</div>
+          <div class="caption">Documentos obligatorios por subir</div>
+        </div>
+      </section>
+
+      <section class="members" aria-label="Documentos por socio">
+        <div class="section-head">
+          <h2 class="heading-sm">¿Quién eres?</h2>
+          <span class="label muted">Selecciona tu nombre</span>
+        </div>
+        <div id="tabs" class="tabs" role="tablist"></div>
+        <div id="doc-panel" class="doc-panel" role="tabpanel"></div>
+      </section>
+    </main>
+
+    <section class="band" data-theme="midnight">
+      <div class="band__in">
+        <div id="band-member">
+          <div class="label muted">Descarga del expediente</div>
+          <h2 class="heading-sm band__title">Solo el administrador puede ver y descargar los archivos.</h2>
+          <p class="body-text muted">Cuando todos terminen, el administrador descarga un ZIP organizado por carpetas para la notaría.</p>
+          <div class="band__actions">
+            <button id="band-admin-btn" class="btn btn--primary" type="button">Acceso admin →</button>
+          </div>
+        </div>
+        <div id="band-admin" hidden>
+          <div class="label muted">Panel de administrador</div>
+          <h2 class="heading-sm band__title" id="admin-title">Expediente incompleto</h2>
+          <p class="body-text muted" id="admin-text"></p>
+          <div class="progress" aria-hidden="true"><div class="progress__bar" id="zip-progress"></div></div>
+          <div class="band__actions">
+            <button id="zip-btn" class="btn btn--primary" type="button">Descargar ZIP ↓</button>
+            <button id="wipe-btn" class="btn btn--ghost" type="button">Borrar todo</button>
+          </div>
+          <p class="caption muted band__note">Cuando la notaría ya tenga el expediente, usa “Borrar todo” para eliminar los documentos del servidor.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Diálogo PIN admin -->
+  <dialog id="admin-dialog" class="dialog">
+    <form id="admin-form" method="dialog" class="pin-form" autocomplete="off">
+      <div class="label">Acceso de administrador</div>
+      <h2 class="heading-sm">PIN de admin</h2>
+      <input id="admin-pin" class="pin-input" type="password" inputmode="numeric" maxlength="12" required aria-label="PIN de administrador">
+      <p id="admin-error" class="form-error" role="alert"></p>
+      <div class="dialog__actions">
+        <button class="btn btn--ghost" type="button" id="admin-cancel">Cancelar</button>
+        <button class="btn btn--primary" type="submit">Entrar →</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="/zip.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
