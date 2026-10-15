@@ -108,7 +108,7 @@
       const anyFile = Object.keys(data.files).length > 0;
       if (!missing.length) {
         $("admin-title").textContent = "Expediente completo.";
-        $("admin-text").textContent = "Los seis socios ya subieron todos sus documentos obligatorios. Descarga el ZIP organizado por carpetas.";
+        $("admin-text").textContent = "Todos los apartados ya tienen todos sus documentos obligatorios. Descarga el ZIP organizado por carpetas.";
         $("zip-btn").textContent = "Descargar ZIP ↓";
       } else {
         $("admin-title").textContent = "Expediente incompleto.";
